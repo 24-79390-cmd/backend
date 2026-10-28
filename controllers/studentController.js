@@ -1,4 +1,4 @@
-import * as studentService from '../services/studentService.js';
+import * as studentService from '../services/studentServices.js';
 
 export const fetchAllStudents = async (req, res) => {
   const students = await studentService.fetchAllStudents();
