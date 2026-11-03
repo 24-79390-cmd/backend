@@ -1,14 +1,33 @@
-import express from "express";
+
+import express from 'express';
 import bookRoutes from './routes/bookRoutes.js';
+import studentRoute from './routes/studentRoute.js';
 
 const app = express();
-app.use('/book', bookRoutes);
+const port = 3000;
 
-try {
-    const port = 3000;
-    app.listen(port, () => {
-        console.log(`listening to port ${port}...`);
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Default route
+app.get('/', (req, res) => {
+    res.status(200).send('Backend Server is Running!');
+});
+
+// API Routes
+app.use('/api/books', bookRoutes);
+app.use('/api/students', studentRoute);
+
+// Handle undefined routes
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: `Route ${req.method} ${req.originalUrl} not found`
     });
-} catch(e) {
-    console.log(e);
-}
+});
+
+// Server
+app.listen(port, () => {
+    console.log(`Listening to port ${port}...`);
+});
